@@ -1,29 +1,30 @@
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelParams = [ "ip=dhcp" ];
+  boot.kernelParams = ["ip=dhcp"];
   boot.initrd = {
     # The ethernet driver: `readlink /sys/class/net/eno1/device/driver`
-    availableKernelModules = [ "e1000e" ];
+    availableKernelModules = ["e1000e"];
     systemd.users.root.shell = "/bin/cryptsetup-askpass";
     network = {
       enable = true;
       ssh = {
         enable = true;
-  port = 2222;
-  authorizedKeys = config.users.users.lucas.openssh.authorizedKeys.keys;
-  hostKeys = [
-    "/etc/secrets/initrd/ssh_host_ed25519_key"
-  ];
+        port = 2222;
+        authorizedKeys = config.users.users.lucas.openssh.authorizedKeys.keys;
+        hostKeys = [
+          "/etc/secrets/initrd/ssh_host_ed25519_key"
+        ];
       };
     };
   };
@@ -66,7 +67,7 @@
   users.users.lucas = {
     isNormalUser = true;
     description = "Lucas";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [];
   };
 
@@ -103,7 +104,7 @@
   ];
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [22];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -115,5 +116,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }
