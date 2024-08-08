@@ -5,14 +5,20 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
   };
 
-  outputs = {
+  outputs = inputs @ {
     self,
     nixpkgs,
     ...
-  } @ inputs: {
+  }: let
+    configuration = {
+      # To get the generation's configuration commit hash when using `nixos-version --configuration-revision`.
+      system.configurationRevision = self.rev or "dirty";
+    };
+  in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        configuration
         ./configuration.nix
       ];
     };
