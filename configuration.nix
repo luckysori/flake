@@ -19,49 +19,14 @@
       enable = true;
       ssh = {
         enable = true;
-	port = 2222;
-	authorizedKeys = config.users.users.lucas.openssh.authorizedKeys.keys;
-	hostKeys = [
-	  "/etc/secrets/initrd/ssh_host_ed25519_key"
-	];
+  port = 2222;
+  authorizedKeys = config.users.users.lucas.openssh.authorizedKeys.keys;
+  hostKeys = [
+    "/etc/secrets/initrd/ssh_host_ed25519_key"
+  ];
       };
     };
   };
-
-  # boot.initrd = let interface = "wlp0s20f0u6"; in
-  #   {
-  #     availableKernelModules = [ "ccm" "ctr" "iwlmvm" "iwlwifi" ];
-
-  #     systemd = {
-  #       enable = true;
-
-  # 	packages = [ pkgs.wpa_supplicant ];
-  # 	initrdBin = [ pkgs.wpa_supplicant ];
-  # 	targets.initrd.wants = [ "wpa_supplicant@${interface}.service" ];
-
-  # 	services."wpa_supplicant@".unitConfig.DefaultDependencies = false;
-
-  # 	users.root.shell = "/bin/systemd-tty-ask-password-agent";
-
-  # 	network.enable = true;
-  # 	network.networks."10-wlan" = {
-  # 	  matchConfig.Name = interface;
-  # 	  networkConfig.DHCP = "yes";
-  # 	};
-  #     };
-
-  #     secrets."/etc/wpa_supplicant/wpa_supplicant-${interface}.conf" = /root/secrets/wpa_supplicant.conf;
-      
-  #     network = {
-  #       enable = true;
-  #     	ssh = {
-  #         enable = true;
-  #         port = 22;
-  #         authorizedKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxfASmrb46pekGht2eINx1+ZsJwbvNm0EE51a1nXOu lucas_soriano@fastmail.com" ];
-  #         hostKeys = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  #     };
-  #   };
-  # };
 
   console.useXkbConfig = true;
 
