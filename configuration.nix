@@ -72,6 +72,18 @@
     packages = with pkgs; [];
   };
 
+  security.sudo.extraRules = [
+    {
+      users = ["lucas"];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = ["SETENV" "NOPASSWD"];
+        }
+      ];
+    }
+  ];
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
