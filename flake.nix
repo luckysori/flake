@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    impermanence.url = "github:Nix-community/impermanence";
   };
 
   outputs = inputs @ {
@@ -17,6 +18,7 @@
   in {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = {inherit inputs;};
       modules = [
         configuration
         ./configuration.nix
