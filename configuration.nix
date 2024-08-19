@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  self,
   ...
 }: {
   imports = [
@@ -69,7 +68,6 @@
     isNormalUser = true;
     description = "Lucas";
     extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [];
   };
 
   security.sudo.extraRules = [
