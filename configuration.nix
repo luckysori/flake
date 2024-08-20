@@ -25,6 +25,7 @@
         port = 2222;
         authorizedKeys = config.users.users.lucas.openssh.authorizedKeys.keys;
         hostKeys = [
+          # TODO: Use dedicated host key during early boot.
           "/persist/etc/ssh/ssh_host_ed25519_key"
         ];
       };
