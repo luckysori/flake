@@ -7,7 +7,15 @@
   imports = [
     ./hardware-configuration.nix
     inputs.impermanence.nixosModules.impermanence
+    inputs.sops-nix.nixosModules.sops
   ];
+
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    secrets."lucas-password".neededForUsers = true;
+
+    age.keyFile = "/persist/sops-nix/key.txt";
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -111,7 +119,7 @@
     isNormalUser = true;
     description = "Lucas";
     extraGroups = ["networkmanager" "wheel"];
-    hashedPasswordFile = "/persist/passwords/lucas";
+    hashedPasswordFile = config.sops.secrets."lucas-password".path;
   };
 
   security.sudo.extraRules = [

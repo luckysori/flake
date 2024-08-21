@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     impermanence.url = "github:Nix-community/impermanence";
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = inputs @ {
