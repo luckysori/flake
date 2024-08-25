@@ -12,9 +12,21 @@
 
   sops = {
     defaultSopsFile = ./secrets/secrets.yaml;
+    age.keyFile = "/persist/sops-nix/key.txt";
+
     secrets."lucas-password".neededForUsers = true;
 
-    age.keyFile = "/persist/sops-nix/key.txt";
+    secrets."restic-backups/repo-name" = {};
+    secrets."restic-backups/password" = {};
+
+    secrets."restic-backups/env/b2-account-id" = {};
+    secrets."restic-backups/env/b2-account-key" = {};
+    templates."restic-backups.env" = {
+      content = ''
+        B2_ACCOUNT_ID=${config.sops.placeholder."restic-backups/env/b2-account-id"}
+        B2_ACCOUNT_KEY=${config.sops.placeholder."restic-backups/env/b2-account-key"}
+      '';
+    };
   };
 
   # Bootloader.
@@ -179,6 +191,32 @@
     enable = true;
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
+  };
+
+  services.restic.backups = {
+    daily = {
+      initialize = true;
+
+      repositoryFile = config.sops.secrets."restic-backups/repo-name".path;
+      environmentFile = config.sops.templates."restic-backups.env".path;
+      passwordFile = config.sops.secrets."restic-backups/password".path;
+
+      paths = [
+        "/persist/"
+        "/home/"
+      ];
+
+      timerConfig = {
+        OnCalendar = "daily";
+        Persistent = true;
+      };
+
+      pruneOpts = [
+        "--keep-daily 7"
+        "--keep-weekly 5"
+        "--keep-monthly 12"
+      ];
+    };
   };
 
   users.users."lucas".openssh.authorizedKeys.keys = [
