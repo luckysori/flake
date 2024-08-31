@@ -27,6 +27,22 @@
         B2_ACCOUNT_KEY=${config.sops.placeholder."restic-backups/env/b2-account-key"}
       '';
     };
+
+    secrets."valheim/server" = {};
+    secrets."valheim/world" = {};
+    secrets."valheim/password" = {};
+    secrets."valheim/me" = {};
+    secrets."valheim/bb" = {};
+    templates."valheim.env" = {
+      content = ''
+        VALHEIM_SERVER=${config.sops.placeholder."valheim/server"}
+        VALHEIM_WORLD=${config.sops.placeholder."valheim/world"}
+        VALHEIM_PASS=${config.sops.placeholder."valheim/password"}
+        VALHEIM_ME=${config.sops.placeholder."valheim/me"}
+        VALHEIM_BB=${config.sops.placeholder."valheim/bb"}
+      '';
+      owner = "valheim";
+    };
   };
 
   # Bootloader.
@@ -149,6 +165,29 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (pkgs.lib.getName pkg) [
+      "valheim-server"
+      "steamworks-sdk-redist"
+    ];
+
+  systemd.services.valheim.serviceConfig.EnvironmentFile = config.sops.templates."valheim.env".path;
+  services.valheim = {
+    enable = true;
+    serverName = "\${VALHEIM_SERVER}";
+    worldName = "\${VALHEIM_WORLD}";
+    password = "\${VALHEIM_PASS}";
+    permittedList = [
+      "\${VALHEIM_ME}"
+      "\${VALHEIM_BB}"
+    ];
+    adminList = [
+      "\${VALHEIM_ME}"
+      "\${VALHEIM_BB}"
+    ];
+    openFirewall = true;
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -158,9 +197,11 @@
   ];
 
   environment.persistence."/persist" = {
+    hideMounts = true;
     directories = [
       "/etc/nixos/"
       "/etc/NetworkManager/system-connections"
+      "/var/lib/valheim"
     ];
     files = [
       "/etc/machine-id"

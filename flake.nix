@@ -4,12 +4,20 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     impermanence.url = "github:Nix-community/impermanence";
-    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    valheim-server = {
+      url = "github:aidalgol/valheim-server-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
+    valheim-server,
     ...
   }: let
     configuration = {
@@ -23,6 +31,7 @@
       modules = [
         configuration
         ./configuration.nix
+        valheim-server.nixosModules.default
       ];
     };
   };
