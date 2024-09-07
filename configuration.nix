@@ -43,6 +43,8 @@
       '';
       owner = "valheim";
     };
+
+    secrets."wg-sk" = {};
   };
 
   # Bootloader.
@@ -186,6 +188,36 @@
       "\${VALHEIM_BB}"
     ];
     openFirewall = true;
+  };
+
+  networking.nat.enable = true;
+  networking.nat.externalInterface = "eth0";
+  networking.nat.internalInterfaces = ["wg0"];
+  networking.firewall = {
+    allowedUDPPorts = [51820];
+  };
+
+  networking.wireguard.interfaces = {
+    # "wg0" is the network interface name. You can name the interface arbitrarily.
+    wg0 = {
+      # Determines the IP address and subnet of the server's end of the tunnel interface.
+      ips = ["10.100.0.1/24"];
+
+      # The port that WireGuard listens to. Must be accessible by the client.
+      listenPort = 51820;
+
+      privateKeyFile = config.sops.secrets."wg-sk".path;
+
+      peers = [
+        # List of allowed peers.
+        {
+          # Name = me
+          publicKey = "NgrNCV+3BQopZkh/ziRDPg/0jNBJAv9j7dc5pmccAGw=";
+          allowedIPs = ["10.100.0.2/32"];
+        }
+        # TODO: Add bb. Restrict their access.
+      ];
+    };
   };
 
   # List packages installed in system profile. To search, run:
