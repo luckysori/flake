@@ -1,1 +1,1 @@
-((nix-mode . ((eval . (dprint-fmt-on-save-mode)))))
+((prog-mode . ((eval . (nix-fmt-on-save-mode)))))

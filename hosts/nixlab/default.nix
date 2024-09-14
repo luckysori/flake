@@ -11,7 +11,7 @@
   ];
 
   sops = {
-    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFile = ../../secrets/secrets.yaml;
     age.keyFile = "/persist/sops-nix/key.txt";
 
     secrets."lucas-password".neededForUsers = true;
@@ -44,7 +44,7 @@
       owner = "valheim";
     };
 
-    secrets."wg-sk" = {};
+    secrets."wg-sk/nixlab" = {};
   };
 
   # Bootloader.
@@ -206,7 +206,7 @@
       # The port that WireGuard listens to. Must be accessible by the client.
       listenPort = 51820;
 
-      privateKeyFile = config.sops.secrets."wg-sk".path;
+      privateKeyFile = config.sops.secrets."wg-sk/nixlab".path;
 
       peers = [
         # List of allowed peers.
@@ -215,7 +215,11 @@
           publicKey = "NgrNCV+3BQopZkh/ziRDPg/0jNBJAv9j7dc5pmccAGw=";
           allowedIPs = ["10.100.0.2/32"];
         }
-        # TODO: Add bb. Restrict their access.
+        {
+          # Name = bb
+          publicKey = "l4VsT21UCKPUT7GQNcHSaryAT8v99ecVYkoyWkbv2jI=";
+          allowedIPs = ["10.100.0.3/32"];
+        }
       ];
     };
   };
