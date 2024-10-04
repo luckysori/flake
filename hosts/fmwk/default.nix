@@ -3,7 +3,9 @@
   config,
   pkgs,
   ...
-}: {
+}: let
+  secretsPath = builtins.toString inputs.mysecrets;
+in {
   imports = [
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.home-manager
@@ -12,7 +14,7 @@
   ];
 
   sops = {
-    defaultSopsFile = ../../secrets/secrets.yaml;
+    defaultSopsFile = "${secretsPath}/secrets.yaml";
     # TODO: Replace key.
     age.keyFile = /persist/sops-nix/key.txt;
 

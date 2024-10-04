@@ -35,6 +35,24 @@
         "type": "github"
       }
     },
+    "mysecrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1728085722,
+        "narHash": "sha256-VraC3SM2XFZz2cp6Vbbr/qi4XYwuf6mFFiWWI2XtRyo=",
+        "ref": "main",
+        "rev": "be20524f47a6f6d8d67df1f629399eaf76b7bc79",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@gitea.com/luckysori/nix-secrets.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@gitea.com/luckysori/nix-secrets.git"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1726454253,
@@ -119,6 +137,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "impermanence": "impermanence",
+        "mysecrets": "mysecrets",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",

@@ -23,6 +23,10 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mysecrets = {
+      url = "git+ssh://git@gitea.com/luckysori/nix-secrets.git?ref=main&shallow=1";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {

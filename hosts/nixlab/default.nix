@@ -3,7 +3,9 @@
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  secretsPath = builtins.toString inputs.mysecrets;
+in {
   imports = [
     ./hardware-configuration.nix
     inputs.impermanence.nixosModules.impermanence
@@ -11,7 +13,7 @@
   ];
 
   sops = {
-    defaultSopsFile = ../../secrets/secrets.yaml;
+    defaultSopsFile = "${secretsPath}/secrets.yaml";
     age.keyFile = "/persist/sops-nix/key.txt";
 
     secrets."lucas-password".neededForUsers = true;
