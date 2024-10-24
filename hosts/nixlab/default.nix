@@ -298,6 +298,28 @@ in {
     };
   };
 
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true;
+    dataDir = "/home/lucas";
+    configDir = "/home/lucas/.config/syncthing";
+    user = "lucas";
+    group = "users";
+
+    settings = {
+      devices = {
+        "desktop" = { id = "BWWBXPV-ULE3ECP-F3534GX-ITNZCLM-4LX4RID-VNSQITK-5MVWOPK-55A3WQD"; };
+      };
+      folders = {
+        "docs" = {
+          path = "/home/lucas/docs";
+          devices = [ "desktop" ];
+        };
+      };
+    };
+  };
+  systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true"; # Don't create default ~/Sync folder
+
   users.users."lucas".openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxfASmrb46pekfGht2eINx1+ZsJwbvNm0EE51a1nXOu lucas_soriano@fastmail.com"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZ0NsISOxHGxgfRqxPJ231m2JB77paAc0MriW78L3z8 fmwk"
