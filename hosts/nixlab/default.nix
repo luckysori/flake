@@ -314,12 +314,13 @@ in {
 
     settings = {
       devices = {
-        "desktop" = { id = "BWWBXPV-ULE3ECP-F3534GX-ITNZCLM-4LX4RID-VNSQITK-5MVWOPK-55A3WQD"; };
+        "desktop" = {id = "BWWBXPV-ULE3ECP-F3534GX-ITNZCLM-4LX4RID-VNSQITK-5MVWOPK-55A3WQD";};
+        "fmwk" = {id = "H67ZFGG-EZM4LSW-7VTXVPH-DFZGOYC-MGT5GOA-ZQ3OFL3-HHM2W2Z-IZQOYA5";};
       };
       folders = {
         "docs" = {
           path = "/home/lucas/docs";
-          devices = [ "desktop" ];
+          devices = ["desktop" "fmwk"];
         };
       };
     };

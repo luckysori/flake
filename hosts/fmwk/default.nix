@@ -127,6 +127,16 @@ in {
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
+  services.syncthing = {
+    enable = true;
+    openDefaultPorts = true;
+    dataDir = "/home/lucas";
+    configDir = "/home/lucas/.config/syncthing";
+    user = "lucas";
+    group = "users";
+  };
+  systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true"; # Don't create default ~/Sync folder
+
   users.users.lucas = {
     isNormalUser = true;
     extraGroups = ["networkmanager" "wheel" "audio" "docker"];
