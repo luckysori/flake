@@ -241,6 +241,7 @@ in {
       "/etc/NetworkManager/system-connections"
       "/var/lib/valheim"
       "/var/lib/plex"
+      "/var/lib/nixos"
     ];
     files = [
       "/etc/machine-id"
