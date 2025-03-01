@@ -150,7 +150,7 @@ in {
   users.users.lucas = {
     isNormalUser = true;
     description = "Lucas";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "plex"];
     hashedPasswordFile = config.sops.secrets."lucas-password".path;
   };
 
@@ -240,6 +240,7 @@ in {
       "/etc/nixos/"
       "/etc/NetworkManager/system-connections"
       "/var/lib/valheim"
+      "/var/lib/plex"
     ];
     files = [
       "/etc/machine-id"
@@ -285,6 +286,10 @@ in {
         "/home/"
       ];
 
+      exclude = [
+        "/persist/var/lib/plex/media-test"
+      ];
+
       timerConfig = {
         OnCalendar = "daily";
         Persistent = true;
@@ -319,6 +324,11 @@ in {
     };
   };
   systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true"; # Don't create default ~/Sync folder
+
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+  };
 
   users.users."lucas".openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxfASmrb46pekfGht2eINx1+ZsJwbvNm0EE51a1nXOu lucas_soriano@fastmail.com"
