@@ -165,6 +165,7 @@ in {
       }))
       .emacsWithPackages
       (epkgs: [epkgs.vterm epkgs.dap-mode epkgs.treesit-grammars.with-all-grammars]))
+    acpi
     alacritty
     brightnessctl
     calibre
